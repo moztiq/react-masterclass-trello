@@ -4,7 +4,17 @@ import { useSetRecoilState } from 'recoil';
 function ToDo({ text, category, id }: IToDo) {
   const setToDos = useSetRecoilState(toDoState);
 
-  const onClick = (newCategory: IToDo['category']) => {};
+  const onClick = (newCategory: IToDo['category']) => {
+    setToDos((prev) =>
+      [...prev].map((toDo) => {
+        if (toDo.id === id) {
+          return { ...toDo, category: newCategory };
+        }
+        return toDo;
+      }),
+    );
+  };
+
   return (
     <li>
       <span>{text}</span>
