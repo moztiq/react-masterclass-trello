@@ -1,34 +1,42 @@
-import { useRecoilState } from 'recoil';
-import { hourSelector, minuteState } from './atoms';
-import { FormEvent } from 'react';
+import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd';
 
 function App() {
-  const [minutes, setMinutes] = useRecoilState(minuteState);
-  const [hours, setHours] = useRecoilState(hourSelector);
-
-  const onMinutesChange = (event: FormEvent<HTMLInputElement>) => {
-    setMinutes(+event.currentTarget.value);
-  };
-
-  const onHoursChange = (event: FormEvent<HTMLInputElement>) => {
-    setHours(+event.currentTarget.value);
-  };
-
+  const onDragEnd = () => {};
   return (
-    <div>
-      <input
-        type="number"
-        value={minutes}
-        onChange={onMinutesChange}
-        placeholder="Minutes"
-      />
-      <input
-        type="number"
-        value={hours}
-        onChange={onHoursChange}
-        placeholder="Hours"
-      />
-    </div>
+    <DragDropContext onDragEnd={onDragEnd}>
+      <div>
+        <ul>
+          <Droppable droppableId="one">
+            {(provided, snapshot) => (
+              <ul ref={provided.innerRef} {...provided.droppableProps}>
+                <Draggable draggableId="first" index={0}>
+                  {(provided, snapshot, rubric) => (
+                    <li
+                      ref={provided.innerRef}
+                      {...provided.draggableProps}
+                      {...provided.dragHandleProps}
+                    >
+                      One
+                    </li>
+                  )}
+                </Draggable>
+                <Draggable draggableId="second" index={1}>
+                  {(provided, snapshot, rubric) => (
+                    <li
+                      ref={provided.innerRef}
+                      {...provided.draggableProps}
+                      {...provided.dragHandleProps}
+                    >
+                      Two
+                    </li>
+                  )}
+                </Draggable>
+              </ul>
+            )}
+          </Droppable>
+        </ul>
+      </div>
+    </DragDropContext>
   );
 }
 
