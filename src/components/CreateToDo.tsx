@@ -20,12 +20,15 @@ function CreateToDo() {
   };
 
   return (
-    <form onSubmit={handleSubmit(handleValid)}>
+    <form onSubmit={handleSubmit(handleValid)} style={{ marginTop: '10px' }}>
       <input
         {...register('toDo', { required: 'Please write a to do' })}
         placeholder="Write a to do"
+        style={{ width: '200px', height: '25px', marginRight: '5px' }}
       />
-      <button>Add</button>
+      <button style={{ width: '100px', height: '25px', marginRight: '5px' }}>
+        Add
+      </button>
     </form>
   );
 }
