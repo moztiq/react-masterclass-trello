@@ -24,18 +24,22 @@ const Boards = styled.div`
 function App() {
   const [toDos, setTodos] = useRecoilState(toDoState);
 
-  const reorder = (list: string[], startIndex: number, endIndex: number) => {
-    const result = Array.from(list);
-    const [removed] = result.splice(startIndex, 1);
-    result.splice(endIndex, 0, removed);
-    return result;
-  };
-
-  const onDragEnd = ({ source, destination }: DropResult) => {
+  const onDragEnd = (info: DropResult) => {
+    const { draggableId, source, destination } = info;
     if (!destination) return;
-    // setTodos((oldToDos) =>
-    //   reorder([...oldToDos], source.index, destination.index),
-    // );
+
+    if (destination.droppableId === source.droppableId) {
+      // same board movement
+      setTodos((allBoards) => {
+        const boardCopy = [...allBoards[source.droppableId]];
+        boardCopy.splice(source.index, 1);
+        boardCopy.splice(destination?.index, 0, draggableId);
+        return {
+          ...allBoards,
+          [source.droppableId]: boardCopy,
+        };
+      });
+    }
   };
 
   return (
